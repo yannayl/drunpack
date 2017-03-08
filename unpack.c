@@ -13,7 +13,7 @@
 #define WARN(fmt, ...) LOG(1, "W: " fmt, ##__VA_ARGS__)
 #define ERROR(fmt, ...) LOG(0, "E: " fmt, ##__VA_ARGS__)
 
-#define SIZE    (32)
+#define INITIAL_MEM_SIZE    (32)
 
 static hashtable_t g_ht_data;
 
@@ -49,8 +49,8 @@ static void dump_memory(const void *p_data, size_t size, const app_pc target) {
     return;
 }
 
-static void free_mem_SIZE(void *ptr) {
-    dr_global_free(ptr, SIZE);
+static void free_mem_INITIAL_MEM_SIZE(void *ptr) {
+    dr_global_free(ptr, INITIAL_MEM_SIZE);
 }
 
 static bool should_dump(const dr_mem_info_t *info) {
@@ -58,12 +58,12 @@ static bool should_dump(const dr_mem_info_t *info) {
     void *prev = NULL;
     void *data = NULL;
 
-    data = dr_global_alloc(SIZE);
+    data = dr_global_alloc(INITIAL_MEM_SIZE);
     DR_ASSERT(data);
     
-    if (false == dr_safe_read(info->base_pc, SIZE, data, NULL)) {
+    if (false == dr_safe_read(info->base_pc, INITIAL_MEM_SIZE, data, NULL)) {
         ret = false;
-        free_mem_SIZE(data);
+        free_mem_INITIAL_MEM_SIZE(data);
         goto exit;
     }
 
@@ -73,12 +73,12 @@ static bool should_dump(const dr_mem_info_t *info) {
         goto exit;
     }
 
-    if (0 == memcmp(prev, data, SIZE)) {
+    if (0 == memcmp(prev, data, INITIAL_MEM_SIZE)) {
         ret = false;
     }
 
 exit:
-    if (prev) { free_mem_SIZE(prev); }
+    if (prev) { free_mem_INITIAL_MEM_SIZE(prev); }
 
     return ret;
 }
@@ -137,7 +137,7 @@ DR_EXPORT void dr_init(client_id_t id) {
 
     drmgr_init();
     hashtable_init_ex(&g_ht_data, 4, HASH_INTPTR, false, false,
-            free_mem_SIZE, NULL, NULL);
+            free_mem_INITIAL_MEM_SIZE, NULL, NULL);
     dr_register_exit_event(event_exit);
 
     if (!drmgr_register_bb_instrumentation_event(NULL,
