@@ -17,5 +17,6 @@ endif(NOT DynamoRIO_FOUND)
 
 add_library(unpack SHARED unpack.c)
 use_DynamoRIO_extension(unpack drmgr) 
+use_DynamoRIO_extension(unpack drcontainers) 
 configure_DynamoRIO_client(unpack)
 
