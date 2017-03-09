@@ -37,7 +37,7 @@ static void dump_memory(const void *p_data, size_t size, const app_pc target) {
 
     while (0 < size) {
         written = dr_write_file(dump, p_data, size);
-        if (ret <= 0) {
+        if (0 >= ret) {
             ERROR("writing dump file failed");
             break;
         }
@@ -140,10 +140,7 @@ DR_EXPORT void dr_init(client_id_t id) {
             free_mem_INITIAL_MEM_SIZE, NULL, NULL);
     dr_register_exit_event(event_exit);
 
-    if (!drmgr_register_bb_instrumentation_event(NULL,
-                event_bb_insert, &priority)) {
-        DR_ASSERT(false);
-        return;
-    }
+    DR_ASSERT(drmgr_register_bb_instrumentation_event(NULL,
+                event_bb_insert, &priority));
 }
 
