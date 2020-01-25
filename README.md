@@ -7,9 +7,9 @@ Executed memory is considered suspicious if it's writable or not mapped to any e
 
 ## Requirements
 
-* [cmake][https://cmake.org/download]
+* [cmake](https://cmake.org/download)
 * make
-* [DynamoRio][https://github.com/DynamoRIO/dynamorio/wiki/Downloads]
+* [DynamoRio](https://github.com/DynamoRIO/dynamorio/wiki/Downloads)
 
 ## Build
 
@@ -30,7 +30,7 @@ The client creates dump for each suspicious memory being executed.
 
 ## Platforms
 
-Theoretically, should support all platforms [supported by DynamoRio][https://github.com/DynamoRIO/dynamorio/blob/master/README.md#about-dynamorio].
+Theoretically, should support all platforms [supported by DynamoRio](https://github.com/DynamoRIO/dynamorio/blob/master/README.md#about-dynamorio).
 
 Practically, it's been tested on:
 * Linux (ubuntu)
